@@ -14,6 +14,13 @@ function App() {
     const onInput = (event)=>{
         setSearchField(event.target.value);
     }
+
+    useEffect(()=>{ //runs everytime function App runs
+        fetch('https://jsonplaceholder.typicode.com/users')
+        .then(response => response.json())
+        .then(users=> {setRobots(users)});
+    }, []) //renders only once, initially bcoz we have not given any arguments
+
     const filteredCards = robots.filter(robot => {
         return robot.name.toLowerCase().includes(searchField.toLocaleLowerCase());
     })
@@ -22,19 +29,12 @@ function App() {
         (
             <div className='tc'>
                 <h1 className='f1'>ROBOGROUP</h1>
-                <button onClick={setCount}>Click Me!</button>
                 <SearchBox searchChange={onInput}/>
                 <Scroll>
                     <CardList robots={filteredCards}/>
                 </Scroll>
             </div>
         );
-
-    useEffect(()=>{ //runs everytime function App runs
-        fetch('https://jsonplaceholder.typicode.com/users')
-        .then(response => response.json())
-        .then(users=> {setRobots(users)});
-    }, []) //renders only once, initially bcoz we have not given any arguments
 }
 
 export default App;
